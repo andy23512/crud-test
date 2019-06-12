@@ -1,4 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { Info } from '../info';
 import { TableComponent } from '../table/table.component';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -8,6 +13,7 @@ import { TableService } from '../table/table.service';
   providers: [TableComponent],
   selector: 'app-form',
   templateUrl: './form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit {
