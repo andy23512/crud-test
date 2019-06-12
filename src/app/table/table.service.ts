@@ -1,49 +1,38 @@
-import { Injectable } from "@angular/core";
-import { Info } from "../info";
-import { Subject } from "rxjs/internal/Subject";
+import { Injectable } from '@angular/core';
+import { Info } from '../info';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class TableService {
-    listSubject = new Subject<Info>();
-
-    getInfo(): Info[] {
-        return [
-            {
-                title: 'Element Title',
-                description: 'Element Description'
-            }, {
-                title: 'test2',
-                description: 'test2 Element Description'
-            }
-        ]
+  // use behavior subject to store data
+  private infoSource = new BehaviorSubject<Info[]>([
+    {
+      title: 'Element Title',
+      description: 'Element Description'
+    },
+    {
+      title: 'test2',
+      description: 'test2 Element Description'
     }
+  ]);
 
-    temp = this.getInfo();
+  // an observable api for table.component to get data from
+  public info$ = this.infoSource.asObservable();
 
-    public addItem(item: Info) {
-        this.temp.push(item);
-        this.listSubject.next(item);
-    }
+  public addItem(item: Info) {
+    const list = this.infoSource.getValue(); // use getValue to get old data
+    this.infoSource.next([...list, item]); // use next to update data
+  }
 
-    public updateItem(newitem: Info, olditem: Info) {
-        this.temp.map(data => {
-            if (data.title === olditem.title && data.description === olditem.description) {
-                data.title = newitem.title;
-                data.description = newitem.description
-            }
-        });
-    }
+  public updateItem(newItem: Info, oldItem: Info) {
+    const list = this.infoSource.getValue();
+    const newList = list.map(item => (item === oldItem ? newItem : item));
+    this.infoSource.next(newList);
+  }
 
-    public removeItem(item: Info) {
-        this.temp = this.temp.filter(function (obj) {
-            return (obj.title !== item.title && obj.description !== item.description);
-        });
-    }
-
-    public getFooBarList() {
-        this.getInfo().map(data => {
-            this.listSubject.next(data);
-        });
-        return this.listSubject.asObservable();
-    }
+  public removeItem(itemToDelete: Info) {
+    const list = this.infoSource.getValue();
+    const newList = list.filter(item => item !== itemToDelete);
+    this.infoSource.next(newList);
+  }
 }
