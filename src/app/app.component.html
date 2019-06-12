@@ -1,0 +1,22 @@
+<div class="left-column">
+
+    <app-table #table
+    (click)="$event.preventDefault()"
+    [showForm]="showForm" (display)="onDisplayClicked($event)"
+    [showDetails]="showDetails" (displayDetails)="onDisplayDetailsClicked($event)"
+    (selectedElement)="setCurrentElement($event)"
+    ></app-table>
+
+</div>
+
+<div class="right-column">
+
+    <app-form #form *ngIf="showForm"
+    [oldInfo]="currentElement"
+    >
+    </app-form>
+    <app-details #details *ngIf="showDetails" [info]="currentElement"
+    [showForm]="showForm" (display)="onDisplayClicked($event)"
+    [showDetails]="showDetails" (displayDetails)="onDisplayDetailsClicked($event)"></app-details>
+
+</div>

@@ -1,0 +1,17 @@
+.left-column {
+  position: relative;
+  padding: 15px;
+  background: #ffffff;
+  height: 100%;
+  float: left;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
+  width: 50%;
+  z-index: 5;
+}
+
+.right-column {
+  background: #ffffff;
+  float: left;
+  width: 50%;
+  padding: 20px;
+}
